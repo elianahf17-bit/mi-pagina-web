@@ -1,0 +1,25 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "images"
+
+collections:
+  - name: "propiedades"
+    label: "Propiedades por Provincia"
+    folder: "content/propiedades"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título de la Propiedad", name: "title", widget: "string" }
+      - { 
+          label: "Provincia", 
+          name: "province", 
+          widget: "select", 
+          options: ["San José", "Alajuela", "Cartago", "Heredia", "Guanacaste", "Puntarenas", "Limón"] 
+        }
+      - { label: "Precio ($)", name: "price", widget: "string" }
+      - { label: "Detalles / Metraje", name: "area", widget: "string" }
+      - { label: "Fotografía", name: "image", widget: "image" }
+      - { label: "Descripción Completa", name: "body", widget: "markdown" }
