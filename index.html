@@ -142,14 +142,14 @@
         <p class="text-neutral-400 text-sm mt-2">Haz tus preguntas sobre avalúos técnicos, peritajes o venta de propiedades en Costa Rica.</p>
       </div>
 
-      <div class="bg-neutral-800 rounded-2xl border border-neutral-700 shadow-xl overflow-hidden flex flex-col h-[450px]">
+      <div class="bg-neutral-800 rounded-2xl border border-neutral-700 shadow-xl overflow-hidden flex flex-col h-[560px]">
         <div class="bg-neutral-950/60 p-4 border-b border-neutral-700 flex items-center gap-3">
           <div class="relative">
             <div class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center font-bold text-white text-lg">🤖</div>
             <span class="w-3 h-3 bg-emerald-500 rounded-full absolute bottom-0 right-0 border-2 border-neutral-900"></span>
           </div>
           <div>
-            <h3 class="font-semibold text-sm text-white">Álvaro · Asistente de Jose</h3>
+            <h3 class="font-semibold text-sm text-white">Álvaro · Tu asistente virtual</h3>
             <p class="text-xs text-neutral-400">Responde al instante</p>
           </div>
         </div>
@@ -158,20 +158,35 @@
           <div class="flex items-start gap-3">
             <div class="w-8 h-8 rounded-full bg-emerald-800/80 flex items-center justify-center text-xs shrink-0 mt-1">🤖</div>
             <div class="bg-neutral-800 border border-neutral-700 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-sm text-neutral-200">
-              ¡Hola! 👋 Soy Álvaro, el asistente de Jose. Pregúntame sobre avalúos, propiedades o sobre Costa Rica: playas, clima, zonas para vivir y más.
+              ¡Hola! 👋 Soy Álvaro, tu asistente virtual. Pregúntame sobre avalúos, propiedades o sobre Costa Rica: playas, clima, zonas para vivir y más.
             </div>
           </div>
         </div>
 
-        <div id="chat-loading" class="hidden px-6 py-2 bg-neutral-900/30 flex items-center gap-2 text-xs text-emerald-400">
+        <div id="chat-loading" class="hidden px-6 py-2 bg-neutral-900/30 items-center gap-2 text-xs text-emerald-400">
           <div class="flex space-x-1">
-            <div class="w-2 h-2"></div>
+            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-bounce" style="animation-delay:0.15s"></div>
+            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-bounce" style="animation-delay:0.3s"></div>
           </div>
+          <span>Álvaro está escribiendo...</span>
         </div>
+
+        <div id="chat-enviar-box" class="hidden px-4 pt-3 text-center bg-neutral-900/30 border-t border-neutral-700">
+          <button id="chat-enviar-btn" type="button" class="bg-emerald-700 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-emerald-600 transition disabled:opacity-60 disabled:cursor-not-allowed">Enviar mi consulta a nuestro equipo</button>
+          <p class="text-[11px] text-neutral-400 mt-1">Usaremos sus datos solo para contactarlo.</p>
+          <p id="chat-enviar-estado" class="text-xs text-emerald-400 mt-1 hidden"></p>
+        </div>
+
+        <form id="chat-form" class="p-4 border-t border-neutral-700 bg-neutral-950/60 flex items-center gap-3">
+          <input id="chat-input" type="text" autocomplete="off" placeholder="Escribe tu mensaje..." class="flex-1 bg-neutral-800 border border-neutral-700 rounded-full px-4 py-2 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-emerald-600">
+          <button type="submit" class="bg-emerald-800 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-emerald-700 transition">Enviar</button>
+        </form>
       </div>
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js"></script>
   <script>
     (function () {
       var WA = '50688443381';
@@ -275,6 +290,257 @@
           botones.forEach(function (b) { b.classList.add('bg-white', 'text-neutral-700'); });
           error();
         });
+
+      // ===== Chat: Álvaro, tu asistente virtual =====
+      if (typeof emailjs !== 'undefined') emailjs.init({ publicKey: "IRKXFyU2p_o5b-PHA" });
+
+      var chatMsgs = document.getElementById('chat-messages');
+      var chatLoading = document.getElementById('chat-loading');
+      var chatForm = document.getElementById('chat-form');
+      var chatInput = document.getElementById('chat-input');
+      var enviarBox = document.getElementById('chat-enviar-box');
+      var enviarBtn = document.getElementById('chat-enviar-btn');
+      var enviarEstado = document.getElementById('chat-enviar-estado');
+
+      var historial = [{ rol: 'alvaro', texto: '¡Hola! 👋 Soy Álvaro, tu asistente virtual. Pregúntame sobre avalúos, propiedades o sobre Costa Rica: playas, clima, zonas para vivir y más.' }];
+      var mensajesCliente = 0;
+      var esperando = false;
+      var captacion = null; // null | nombre | contacto | presupuesto | busca
+      var contactoDado = false;
+      var conocimientoP = null;
+
+      var PROVINCIAS = ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Guanacaste', 'Puntarenas', 'Limón'];
+      var COSTERAS = ['Guanacaste', 'Puntarenas', 'Limón'];
+      var ALTAS = ['San José', 'Alajuela', 'Cartago', 'Heredia'];
+      var PREGUNTAS = {
+        nombre: '¿Con quién tengo el gusto? ¿Me indica su nombre, por favor?',
+        contacto: '¿Me deja un teléfono o correo para que nuestro equipo lo contacte?',
+        presupuesto: '¿Cuál es su presupuesto aproximado?',
+        busca: '¿Qué tipo de propiedad y en qué zona busca?'
+      };
+      var RE_TEL = /\+?\d[\d\s\-]{6,}\d/;
+      var RE_MAIL = /[^\s@]+@[^\s@]+\.[^\s@]+/;
+
+      function normalizar(t) {
+        return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      }
+
+      function palabras(t) {
+        return ' ' + normalizar(t).replace(/[^a-z0-9ñ]+/g, ' ').trim() + ' ';
+      }
+
+      function tiene(norm, lista) {
+        return lista.some(function (w) { return norm.indexOf(' ' + normalizar(w) + ' ') !== -1; });
+      }
+
+      function agregarMensaje(rol, texto) {
+        var fila;
+        if (rol === 'cliente') {
+          fila = el('div', 'flex items-start gap-3 justify-end');
+          fila.appendChild(el('div', 'bg-emerald-800 p-4 rounded-2xl rounded-tr-none max-w-[85%] text-sm text-white whitespace-pre-line', texto));
+        } else {
+          fila = el('div', 'flex items-start gap-3');
+          fila.appendChild(el('div', 'w-8 h-8 rounded-full bg-emerald-800/80 flex items-center justify-center text-xs shrink-0 mt-1', '🤖'));
+          fila.appendChild(el('div', 'bg-neutral-800 border border-neutral-700 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-sm text-neutral-200 whitespace-pre-line', texto));
+        }
+        chatMsgs.appendChild(fila);
+        chatMsgs.scrollTop = chatMsgs.scrollHeight;
+        historial.push({ rol: rol, texto: texto });
+      }
+
+      function mostrarCargando(v) {
+        chatLoading.classList.toggle('hidden', !v);
+        chatLoading.classList.toggle('flex', v);
+        chatMsgs.scrollTop = chatMsgs.scrollHeight;
+      }
+
+      function cargarConocimiento() {
+        if (!conocimientoP) {
+          conocimientoP = fetch('conocimiento.json')
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .catch(function () { conocimientoP = null; return null; });
+        }
+        return conocimientoP;
+      }
+
+      function mejorTema(conocimiento, norm) {
+        var mejor = null, max = 0;
+        (conocimiento.temas || []).forEach(function (t) {
+          var n = 0;
+          (t.palabras || []).forEach(function (w) { if (norm.indexOf(' ' + normalizar(w) + ' ') !== -1) n++; });
+          if (n > max) { max = n; mejor = t; }
+        });
+        return mejor;
+      }
+
+      // Devuelve { lista } si el mensaje habla de una zona (provincia, playa, finca, montaña), o null.
+      function zonaDe(norm, tema) {
+        var provs = PROVINCIAS.filter(function (p) { return norm.indexOf(' ' + normalizar(p) + ' ') !== -1; });
+        var filtro = null;
+        if (provs.length) {
+          filtro = function (p) { return provs.indexOf(p.provincia) !== -1; };
+        } else if (tema && tema.id === 'playas') {
+          filtro = function (p) { return COSTERAS.indexOf(p.provincia) !== -1; };
+        } else if (tiene(norm, ['finca', 'fincas'])) {
+          filtro = function (p) { return String(p.tipo).toLowerCase() === 'finca'; };
+        } else if (tema && tema.id === 'montana') {
+          filtro = function (p) { return ALTAS.indexOf(p.provincia) !== -1; };
+        }
+        if (!filtro) return null;
+        return { lista: propiedades.filter(filtro).slice(0, 3) };
+      }
+
+      function iniciarCaptacion() {
+        captacion = 'nombre';
+        return PREGUNTAS.nombre;
+      }
+
+      // Avanza la captación de datos: una pregunta por mensaje, en orden.
+      function avanzarCaptacion(texto) {
+        var pasos = ['nombre', 'contacto', 'presupuesto', 'busca'];
+        if (captacion === 'contacto') {
+          if (!RE_TEL.test(texto) && !RE_MAIL.test(texto)) {
+            return 'Para que nuestro equipo pueda contactarlo necesito un teléfono o un correo. ' + PREGUNTAS.contacto;
+          }
+          contactoDado = true;
+          captacion = 'presupuesto';
+          return 'Gracias. Nuestro equipo lo contactará pronto. Puede enviar su consulta con el botón de abajo.\n' + PREGUNTAS.presupuesto;
+        }
+        var i = pasos.indexOf(captacion);
+        if (i === pasos.length - 1) {
+          captacion = null;
+          return 'Perfecto, ya tengo lo necesario. Nuestro equipo lo contactará pronto.';
+        }
+        captacion = pasos[i + 1];
+        return PREGUNTAS[captacion];
+      }
+
+      // TODO: conectar IA aquí
+      // Recibe (texto, historial) y devuelve una promesa con la respuesta de Álvaro; se puede reemplazar por una IA sin tocar el resto.
+      function obtenerRespuesta(texto, historial) {
+        return cargarConocimiento().then(function (conocimiento) {
+          var norm = palabras(texto);
+          var cierre = conocimiento && conocimiento.cierre ? conocimiento.cierre : '';
+          var tema = conocimiento ? mejorTema(conocimiento, norm) : null;
+
+          // Captación de datos en curso
+          if (captacion) {
+            if (texto.indexOf('?') !== -1 && tema && captacion !== 'busca') {
+              return tema.respuesta + '\n\n' + PREGUNTAS[captacion];
+            }
+            return avanzarCaptacion(texto);
+          }
+
+          // Teléfono o correo dado espontáneamente
+          if (RE_TEL.test(texto) || RE_MAIL.test(texto)) {
+            contactoDado = true;
+            return 'Gracias. Nuestro equipo lo contactará pronto. Puede enviar su consulta con el botón de abajo.';
+          }
+
+          // Saludos y despedidas
+          if (tiene(norm, ['gracias', 'adios', 'chao', 'hasta luego', 'nos vemos', 'bye'])) {
+            return '¡Con gusto! Aquí estoy si necesita algo más. 😊';
+          }
+          if (!tema && tiene(norm, ['hola', 'buenas', 'buenos dias', 'buenas tardes', 'buenas noches', 'saludos', 'hey'])) {
+            return '¡Hola! 😊 ¿En qué le puedo ayudar?';
+          }
+
+          // Pide ayuda
+          if (tiene(norm, ['ayuda', 'ayudame', 'ayudenme', 'asesor', 'asesoria', 'contactarme', 'contacten', 'llamen', 'llamenme'])) {
+            return 'Con gusto le ayudamos. ' + iniciarCaptacion();
+          }
+
+          if (!conocimiento) {
+            return 'En este momento no puedo consultar mi información. Si gusta, deje sus datos y nuestro equipo lo contactará. ' + iniciarCaptacion();
+          }
+
+          var zona = zonaDe(norm, tema);
+          if (zona) {
+            var base = tema ? tema.respuesta + '\n\n' : '';
+            if (zona.lista.length) {
+              var lineas = zona.lista.map(function (p) { return '• ' + p.titulo + ' — ' + p.precio; });
+              return base + 'Estas son algunas propiedades publicadas en esa zona:\n' + lineas.join('\n') + (cierre ? '\n\n' + cierre : '');
+            }
+            return base + 'Por ahora no tenemos propiedades publicadas en esa zona, pero con gusto nuestro equipo le ayuda a encontrar una.\n\n' + iniciarCaptacion();
+          }
+
+          if (tema) return tema.respuesta + (cierre ? '\n\n' + cierre : '');
+
+          if (tiene(norm, ['propiedad', 'propiedades', 'casa', 'casas', 'terreno', 'terrenos', 'lote', 'lotes', 'local', 'locales', 'comprar', 'disponible', 'disponibles', 'busco'])) {
+            return '¡Claro! ¿Qué tipo de propiedad busca (casa, terreno, finca o local) y en qué zona o provincia?';
+          }
+
+          return 'No estoy seguro de haber entendido. ¿Podría reformular su pregunta? También puede dejar sus datos y nuestro equipo lo contactará.';
+        });
+      }
+
+      function quiereBoton(texto) {
+        var norm = palabras(texto);
+        if (tiene(norm, ['visita', 'visitar', 'negociar', 'negociacion', 'precio', 'precios', 'cuanto cuesta', 'cuanto vale', 'cotizar', 'cotizacion'])) return true;
+        if (tiene(norm, ['avaluo', 'avaluar']) && tiene(norm, ['mi', 'mis', 'quiero', 'necesito', 'solicito', 'solicitar', 'tengo', 'requiero'])) return true;
+        return RE_TEL.test(texto) || RE_MAIL.test(texto);
+      }
+
+      function textoConversacion() {
+        return historial.map(function (m) {
+          return (m.rol === 'cliente' ? 'Cliente: ' : 'Álvaro: ') + m.texto.replace(/\n+/g, ' ');
+        }).join('\n');
+      }
+
+      function enviarMensaje(texto) {
+        if (esperando || !texto) return;
+        esperando = true;
+        agregarMensaje('cliente', texto);
+        mensajesCliente++;
+        var botonPorTexto = quiereBoton(texto);
+        mostrarCargando(true);
+        setTimeout(function () {
+          obtenerRespuesta(texto, historial).then(function (resp) {
+            mostrarCargando(false);
+            agregarMensaje('alvaro', resp);
+            if (botonPorTexto || contactoDado || mensajesCliente >= 6) enviarBox.classList.remove('hidden');
+          }).catch(function () {
+            mostrarCargando(false);
+            agregarMensaje('alvaro', 'Disculpe, tuve un inconveniente. ¿Podría intentarlo de nuevo?');
+          }).then(function () { esperando = false; });
+        }, 500);
+      }
+
+      chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var t = chatInput.value.trim();
+        if (!t) return;
+        chatInput.value = '';
+        enviarMensaje(t);
+      });
+
+      enviarBtn.addEventListener('click', function () {
+        enviarBtn.disabled = true;
+        enviarBtn.textContent = 'Enviando...';
+        enviarEstado.classList.add('hidden');
+        enviarEstado.textContent = '';
+        var enviado;
+        try {
+          enviado = emailjs.send("service_7j8bqas", "template_9fj7lt8", { conversacion: textoConversacion() });
+        } catch (err) {
+          enviado = Promise.reject(err);
+        }
+        enviado.then(function () {
+          enviarEstado.textContent = 'Listo, nuestro equipo recibirá su consulta y lo contactará pronto.';
+          enviarEstado.classList.remove('hidden');
+          enviarBtn.textContent = 'Consulta enviada';
+        }).catch(function () {
+          enviarEstado.textContent = 'No pudimos enviar su consulta en este momento. Por favor escríbanos por WhatsApp: ';
+          var a = el('a', 'underline font-medium', 'abrir WhatsApp');
+          a.href = waLink('Hola, quisiera hacer una consulta.');
+          a.target = '_blank';
+          a.rel = 'noopener';
+          enviarEstado.appendChild(a);
+          enviarEstado.classList.remove('hidden');
+          enviarBtn.disabled = false;
+          enviarBtn.textContent = 'Enviar mi consulta a nuestro equipo';
+        });
+      });
     })();
   </script>
 </body>
