@@ -165,4 +165,117 @@
 
         <div id="chat-loading" class="hidden px-6 py-2 bg-neutral-900/30 flex items-center gap-2 text-xs text-emerald-400">
           <div class="flex space-x-1">
-            <div class="w-2 h-2
+            <div class="w-2 h-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var WA = '50688443381';
+      var ICONOS = { terreno: '🌄', finca: '🌾', casa: '🏠', local: '🏪' };
+      var FONDOS = { terreno: 'bg-amber-100', finca: 'bg-lime-100', casa: 'bg-emerald-100', local: 'bg-sky-100' };
+      var container = document.getElementById('propiedades-container');
+      var botones = document.querySelectorAll('.prov-btn');
+      var propiedades = [];
+
+      function waLink(texto) {
+        return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(texto);
+      }
+
+      function el(tag, cls, texto) {
+        var e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (texto !== undefined) e.textContent = texto;
+        return e;
+      }
+
+      function placeholder(tipo) {
+        var d = el('div', 'w-full h-48 flex items-center justify-center text-5xl ' + (FONDOS[tipo] || 'bg-neutral-200'), ICONOS[tipo] || '🏡');
+        return d;
+      }
+
+      function tarjeta(p) {
+        var card = el('div', 'bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden flex flex-col');
+        var tipo = String(p.tipo || '').toLowerCase();
+
+        var foto;
+        if (p.foto) {
+          foto = el('img', 'w-full h-48 object-cover');
+          foto.alt = p.titulo || '';
+          foto.loading = 'lazy';
+          foto.onerror = function () { foto.replaceWith(placeholder(tipo)); };
+          foto.src = p.foto;
+        } else {
+          foto = placeholder(tipo);
+        }
+        card.appendChild(foto);
+
+        var body = el('div', 'p-6 flex flex-col flex-1');
+        body.appendChild(el('span', 'text-xs uppercase tracking-widest text-emerald-800 font-semibold mb-2', (p.provincia || '') + ' · ' + tipo));
+        body.appendChild(el('h3', 'font-semibold text-xl mb-2 text-neutral-900', p.titulo));
+        body.appendChild(el('p', 'text-lg font-medium text-emerald-800 mb-3', p.precio));
+        body.appendChild(el('p', 'text-neutral-600 text-sm leading-relaxed mb-6 flex-1', p.descripcion));
+
+        var btn = el('a', 'bg-emerald-800 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-emerald-700 transition text-center', 'Consultar');
+        btn.href = waLink('Hola, me interesa la propiedad: ' + p.titulo);
+        btn.target = '_blank';
+        btn.rel = 'noopener';
+        body.appendChild(btn);
+
+        card.appendChild(body);
+        return card;
+      }
+
+      function mostrar(prov) {
+        botones.forEach(function (b) {
+          var activo = b.dataset.prov === prov;
+          b.classList.toggle('bg-emerald-800', activo);
+          b.classList.toggle('text-white', activo);
+          b.classList.toggle('border-emerald-800', activo);
+          b.classList.toggle('bg-white', !activo);
+          b.classList.toggle('text-neutral-700', !activo);
+        });
+        container.innerHTML = '';
+        var lista = prov === 'Todas' ? propiedades : propiedades.filter(function (p) { return p.provincia === prov; });
+        if (!lista.length) {
+          var vacio = el('p', 'md:col-span-3 text-center text-neutral-500', 'Por ahora no hay propiedades en esta provincia. Escríbanos y le ayudamos a encontrar la ideal.');
+          container.appendChild(vacio);
+          return;
+        }
+        lista.forEach(function (p) { container.appendChild(tarjeta(p)); });
+      }
+
+      function error() {
+        container.innerHTML = '';
+        var box = el('div', 'md:col-span-3 text-center py-10');
+        box.appendChild(el('p', 'text-neutral-600 mb-4', 'No pudimos cargar las propiedades en este momento. Escríbanos por WhatsApp y con gusto le enviamos la lista.'));
+        var a = el('a', 'inline-block bg-emerald-800 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-emerald-700 transition', 'Escribir por WhatsApp');
+        a.href = waLink('Hola, quisiera ver las propiedades disponibles.');
+        a.target = '_blank';
+        a.rel = 'noopener';
+        box.appendChild(a);
+        container.appendChild(box);
+      }
+
+      botones.forEach(function (b) {
+        b.addEventListener('click', function () { mostrar(b.dataset.prov); });
+      });
+
+      fetch('propiedades.json')
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (data) {
+          if (!Array.isArray(data)) throw new Error('formato');
+          propiedades = data;
+          mostrar('Todas');
+        })
+        .catch(function () {
+          botones.forEach(function (b) { b.classList.add('bg-white', 'text-neutral-700'); });
+          error();
+        });
+    })();
+  </script>
+</body>
+</html>

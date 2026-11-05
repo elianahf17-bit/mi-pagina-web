@@ -1,0 +1,61 @@
+{
+  "revisar": true,
+  "cierre": "Si me cuenta qué tipo de propiedad busca y en qué zona, nuestro equipo puede ayudarle a encontrarla. ¿Me deja su nombre y un contacto?",
+  "temas": [
+    {
+      "id": "clima_estaciones",
+      "palabras": ["clima", "estacion", "estaciones", "lluvia", "lluvias", "lluvioso", "seca", "verano", "invierno", "temporada", "epoca"],
+      "respuesta": "Costa Rica no tiene las cuatro estaciones tradicionales, sino dos épocas según las lluvias. La estación seca, o 'verano', va de diciembre a abril: días soleados, cielos despejados y menos humedad. La estación lluviosa, o 'invierno', va de mayo a noviembre: las mañanas suelen ser soleadas y las lluvias llegan en aguaceros por la tarde. Septiembre y octubre son los meses más lluviosos en el Pacífico."
+    },
+    {
+      "id": "clima_regiones",
+      "palabras": ["seco", "calor", "caliente", "frio", "fresco", "temperatura", "templado", "humedo", "tropical"],
+      "respuesta": "El lugar más seco es Guanacaste y el Pacífico Norte, con la temporada seca más larga del país. Llueve más en el Pacífico Sur (Osa y Golfo Dulce) y en el Caribe (Limón); el Caribe no tiene una estación seca definida y puede llover en cualquier mes. Hace más calor en las costas y en las llanuras del norte, con 28 a 35 grados. Es más frío en montañas de más de 1500 metros, como Zarcero, Monteverde, Coronado, San Gerardo de Rota y las faldas de los volcanes Irazú y Barva, con 10 a 18 grados."
+    },
+    {
+      "id": "playas",
+      "palabras": ["playa", "playas", "mar", "costa", "oceano", "surf", "caribe", "pacifico", "guanacaste", "puntarenas", "limon"],
+      "respuesta": "Hay tres grandes zonas de playa. En el Pacífico Norte (Guanacaste) están Tamarindo, Conchal, Flamingo y Playas del Coco, con arena clara y clima cálido y seco la mayor parte del año. En el Pacífico Central y Sur (Puntarenas) están Jacó, Manuel Antonio, Dominical, Uvita y Puerto Jiménez, con playa y vegetación frondosa. En el Caribe (Limón) están Puerto Viejo, Cahuita, Manzanillo y Tortuguero, con playas rodeadas de bosque tropical húmedo."
+    },
+    {
+      "id": "montana",
+      "palabras": ["montana", "valle central", "eterna primavera", "retiro", "tranquilo", "jubilarme", "jubilarse", "san jose", "heredia", "alajuela", "cartago", "monteverde", "zarcero"],
+      "respuesta": "En el Valle Central (San José, Heredia, Alajuela y Cartago), a 900 a 1400 metros de altura, el clima es templado todo el año, entre 18 y 26 grados, como una 'eterna primavera'. En la Cordillera Volcánica Central y de Talamanca (San Gerardo de Dota, Cerro de la Muerte, Zarcero, Monteverde) el clima es frío y con bruma, con bosques ideales para una vida tranquila en la naturaleza."
+    },
+    {
+      "id": "ganaderia",
+      "palabras": ["ganado", "ganaderia", "vacas", "leche", "carne", "pastos", "pastizal", "hato"],
+      "respuesta": "La ganadería de carne es extensiva y se da sobre todo en Guanacaste y en la Zona Norte (San Carlos, Los Chiles, Upala y Sarapiquí), donde hay grandes extensiones de pastizal. La ganadería de leche es intensiva y se ubica en zonas de altura de clima frío o templado, como Canoas de Alajuela, Zarcero, las faldas de los volcanes Poás, Barva e Irazú y las zonas altas de Cartago."
+    },
+    {
+      "id": "agricultura",
+      "palabras": ["siembra", "cultivo", "cultivos", "agricultura", "agronomia", "cafe", "pina", "banano", "cana", "hortalizas", "papa", "papas", "citricos", "yuca", "name", "finca"],
+      "respuesta": "Piña y banano se dan en las llanuras del norte (San Carlos, Upala, Sarapiquí) y en la vertiente del Caribe, por la humedad y el calor. El café necesita de 800 a 1600 metros de altura; sobresalen Tarrazú, Naranjo, Grecia, Poás, Tres Ríos y Turrialba. La caña de azúcar se da en Guanacaste, Grecia y Turrialba. Las hortalizas, papas y legumbres se dan en zonas altas y húmedas de Cartago (faldas del Irazú) y Zarcero. Los cítricos y tubérculos como yuca y ñame se dan en la Zona Norte y en regiones de Alajuela y Guanacaste."
+    },
+    {
+      "id": "avaluo_proceso",
+      "palabras": ["avaluo", "avaluos", "valuacion", "peritaje", "perito", "tasacion", "tasador", "valorar", "cuanto vale"],
+      "respuesta": "El avalúo determina el valor comercial real de un bien. Lo realiza un perito valuador certificado. Incluye una inspección física (medidas, linderos, topografía, calidad de los accesos, servicios públicos como agua y electricidad, y estado y antigüedad de las construcciones), un estudio jurídico y cartográfico que compara los datos de campo con la escritura inscrita y el plano catastrado, y un informe técnico final con el valor por metro cuadrado del terreno y de la construcción."
+    },
+    {
+      "id": "avaluo_costo",
+      "palabras": ["costo", "cuesta", "cuanto cuesta", "honorarios", "tarifa", "banco", "financiamiento", "credito", "hipoteca", "prestamo"],
+      "respuesta": "Los honorarios de un avalúo suelen calcularse con una tarifa porcentual escalonada sobre el valor tasado del inmueble. Además, el avalúo es un requisito cuando se solicita financiamiento bancario. Para un monto exacto, nuestro equipo puede darle una cotización según su caso."
+    },
+    {
+      "id": "construccion",
+      "palabras": ["construccion", "construir", "sismo", "sismico", "sismos", "temblor", "temblores", "terremoto", "codigo", "planos"],
+      "respuesta": "Costa Rica tiene alta actividad tectónica, por lo que sus normas de construcción son exigentes. El Código Sísmico de Costa Rica es de cumplimiento obligatorio para toda obra, y el diseño estructural requiere la firma de un profesional registrado en el CFIA y el sellado de planos. Las casas se construyen sobre todo en mampostería reforzada (bloques de concreto), concreto fundido o estructuras de acero, y el cumplimiento del código da a las construcciones modernas un nivel aceptable de resistencia ante sismos fuertes."
+    },
+    {
+      "id": "seguridad",
+      "palabras": ["seguridad", "seguro", "segura", "delincuencia", "inseguridad", "robos", "violencia", "ejercito", "estable", "estabilidad"],
+      "respuesta": "Costa Rica no tiene ejército desde 1948 y se destaca en la región por su estabilidad política y sus instituciones. Como en otros países, hay delincuencia común, como hurtos y robos, en algunos sectores de ciudades principales y zonas de mucho turismo. En comunidades rurales, de montaña o residenciales organizadas, la vida suele ser más tranquila."
+    },
+    {
+      "id": "volcanes_termales",
+      "palabras": ["volcan", "volcanes", "termales", "termal", "aguas termales", "arenal", "fortuna", "poas", "barva", "irazu", "turrialba", "rincon de la vieja"],
+      "respuesta": "San Carlos (La Fortuna y el Volcán Arenal) es el principal referente de aguas termales, con vistas al volcán, mucha biodiversidad y suelo fértil. Las faldas de los volcanes Poás y Barva (Alajuela y Heredia) ofrecen clima de montaña, cercanía con el Gran Área Metropolitana y contacto con la naturaleza. Las faldas del Irazú y Turrialba (Cartago) son de vocación agrícola y de leche, con clima frío y vistas panorámicas. Rincón de la Vieja (Guanacaste) ofrece aguas termales y barro mineral en una provincia cálida y seca."
+    }
+  ]
+}

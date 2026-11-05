@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "provincia": "San José",
+    "titulo": "Lote residencial en Escazú",
+    "tipo": "terreno",
+    "precio": "₡85.000.000",
+    "descripcion": "Lote plano de 450 m² en zona residencial con todos los servicios. Cerca de colegios y comercio.",
+    "foto": "img/san-jose-1.jpg"
+  },
+  {
+    "id": 2,
+    "provincia": "San José",
+    "titulo": "Local comercial en Desamparados",
+    "tipo": "local",
+    "precio": "₡120.000.000",
+    "descripcion": "Local de 90 m² sobre calle principal con alto flujo de personas. Ideal para negocio propio o alquiler.",
+    "foto": "img/san-jose-2.jpg"
+  },
+  {
+    "id": 3,
+    "provincia": "Alajuela",
+    "titulo": "Casa con patio en Atenas",
+    "tipo": "casa",
+    "precio": "₡95.000.000",
+    "descripcion": "Casa de tres cuartos con patio amplio y árboles frutales. Clima agradable todo el año.",
+    "foto": "img/alajuela-1.jpg"
+  },
+  {
+    "id": 4,
+    "provincia": "Alajuela",
+    "titulo": "Finca de 5 hectáreas en San Carlos",
+    "tipo": "finca",
+    "precio": "₡210.000.000",
+    "descripcion": "Finca con pasto mejorado, agua de nacientes y acceso en lastre. Apta para ganadería o cultivo."
+    ,"foto": "img/alajuela-2.jpg"
+  },
+  {
+    "id": 5,
+    "provincia": "Cartago",
+    "titulo": "Terreno agrícola en Oreamuno",
+    "tipo": "terreno",
+    "precio": "₡60.000.000",
+    "descripcion": "Terreno de 2.500 m² con vista a las montañas. Tierra fértil, ideal para hortalizas.",
+    "foto": "img/cartago-1.jpg"
+  },
+  {
+    "id": 6,
+    "provincia": "Cartago",
+    "titulo": "Casa de campo en Paraíso",
+    "tipo": "casa",
+    "precio": "₡78.000.000",
+    "descripcion": "Casa sencilla de un nivel con lote de 800 m². Tranquila y cerca del centro de Paraíso.",
+    "foto": "img/cartago-2.jpg"
+  },
+  {
+    "id": 7,
+    "provincia": "Heredia",
+    "titulo": "Lote en condominio de Barva",
+    "tipo": "terreno",
+    "precio": "₡70.000.000",
+    "descripcion": "Lote de 300 m² dentro de condominio con seguridad. Calles pavimentadas y áreas verdes.",
+    "foto": "img/heredia-1.jpg"
+  },
+  {
+    "id": 8,
+    "provincia": "Heredia",
+    "titulo": "Local en el centro de Heredia",
+    "tipo": "local",
+    "precio": "₡135.000.000",
+    "descripcion": "Local de dos plantas a pocos metros del parque central. Excelente ubicación comercial.",
+    "foto": "img/heredia-2.jpg"
+  },
+  {
+    "id": 9,
+    "provincia": "Guanacaste",
+    "titulo": "Terreno cerca de playa en Nicoya",
+    "tipo": "terreno",
+    "precio": "₡150.000.000",
+    "descripcion": "Terreno de 1.200 m² a 10 minutos de la playa. Con agua y electricidad en la entrada.",
+    "foto": "img/guanacaste-1.jpg"
+  },
+  {
+    "id": 10,
+    "provincia": "Guanacaste",
+    "titulo": "Finca ganadera en Santa Cruz",
+    "tipo": "finca",
+    "precio": "₡320.000.000",
+    "descripcion": "Finca de 20 hectáreas con corrales, pozo y buen acceso todo el año."
+    ,"foto": "img/guanacaste-2.jpg"
+  },
+  {
+    "id": 11,
+    "provincia": "Puntarenas",
+    "titulo": "Casa frente al mar en Esparza",
+    "tipo": "casa",
+    "precio": "₡180.000.000",
+    "descripcion": "Casa de dos niveles con terraza y vista al golfo. Lista para habitar.",
+    "foto": "img/puntarenas-1.jpg"
+  },
+  {
+    "id": 12,
+    "provincia": "Puntarenas",
+    "titulo": "Finca en Monteverde",
+    "tipo": "finca",
+    "precio": "₡240.000.000",
+    "descripcion": "Finca de 3 hectáreas con bosque y clima fresco. Buen potencial turístico.",
+    "foto": "img/puntarenas-2.jpg"
+  },
+  {
+    "id": 13,
+    "provincia": "Limón",
+    "titulo": "Terreno en Cahuita",
+    "tipo": "terreno",
+    "precio": "₡55.000.000",
+    "descripcion": "Terreno plano de 1.000 m² cerca del Caribe. Con título al día y calle pública.",
+    "foto": "img/limon-1.jpg"
+  },
+  {
+    "id": 14,
+    "provincia": "Limón",
+    "titulo": "Local en Guápiles",
+    "tipo": "local",
+    "precio": "₡90.000.000",
+    "descripcion": "Local de 70 m² en la ruta principal, con parqueo propio. Zona de gran movimiento comercial.",
+    "foto": "img/limon-2.jpg"
+  }
+]
